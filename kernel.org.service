@@ -1,0 +1,10 @@
+[Unit]
+Description=Korg service
+After=network.target
+Wants=network.target
+
+[Service]
+Type=simple
+ExecStart=/usr/bin/python3 <path to script>/kernel_org.py
+[Install]
+WantedBy=multi-user.target 
