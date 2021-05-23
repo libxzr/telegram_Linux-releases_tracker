@@ -24,7 +24,7 @@ def fetch_once():
         for row in table.children:
             if type(row) != Tag:
                 continue
-            ret.append(row.find_all("td")[1].string)
+            ret.append(next(row.find_all("td")[1].strings))
         logging.info(ret)
     except BaseException as e:
         logging.error(e)
