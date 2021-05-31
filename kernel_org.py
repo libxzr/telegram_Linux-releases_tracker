@@ -33,11 +33,7 @@ def fetch_once():
 
 
 def list_cmp(list_old, list_new):
-    ret = []
-    for element in list_new:
-        if list_old.count(element) == 0:
-            ret.append(element)
-    return ret
+    return list(set(list_new) - set(list_old))
 
 def send(what):
     status = 0
