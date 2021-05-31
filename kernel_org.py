@@ -19,7 +19,7 @@ logging.basicConfig(
 )
 
 def fetch_once():
-    ret = []
+    ret = set()
     try:
         res = req.get("https://kernel.org")
         bs = BeautifulSoup(res.text, features="html.parser")
@@ -27,15 +27,12 @@ def fetch_once():
         for row in table.children:
             if not isinstance(row, Tag):
                 continue
-            ret.append(next(row.find_all("td")[1].strings))
+            ret.add(next(row.find_all("td")[1].strings))
         logging.info(ret)
     except Exception as e:
         logging.error(e)
         return
     return ret
-
-def list_cmp(list_old, list_new):
-    return list(set(list_new) - set(list_old))
 
 def send(what):
     status = 0
@@ -52,6 +49,6 @@ while True:
     next_result = fetch_once()
     if next_result is None:
         continue
-    for item in list_cmp(last_result, next_result):
+    for item in next_result - last_result:
         send("*New Linux Kernel Release*\n[%s](https://www.kernel.org/)" % item)
     last_result = next_result
