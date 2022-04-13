@@ -21,7 +21,7 @@ logging.basicConfig(
 def fetch_once():
     ret = set()
     try:
-        res = req.get("https://kernel.org")
+        res = req.get("https://kernel.org", timeout=10)
         bs = BeautifulSoup(res.text, features="html.parser")
         table = bs.find("table", id="releases")
         for row in table.children:
