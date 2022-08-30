@@ -41,7 +41,7 @@ def send(what):
         status = req.post(
                 "https://api.telegram.org/bot%s/sendMessage" % bot_id,
                 {"parse_mode": "Markdown", "text": what, "chat_id": chat_id},
-            ).status_code
+                timeout=10).status_code
 
 last_result = fetch_once()
 while True:
