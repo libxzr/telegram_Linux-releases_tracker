@@ -6,10 +6,9 @@ https://t.me/linux_releases
 
 ## Usage
 
-- `pip install -r requirements.txt`
-- Edit script path in `kernel.org.service`
-- Move `kernel.org.service` to `/etc/systemd/system`
-- Set up `chat_id` and `bot_id` in `kernel_org.py`
-- `systemctl enable kernel.org.service`
-- `systemctl start kernel.org.service`
-- Enjoy
+- Install docker and git.
+- `git clone https://github.com/libxzr/telegram_Linux-releases_tracker && cd telegram_Linux-releases_tracker`
+- `KTRACKER_CHAT_ID="<your chat id>" KTRACKER_BOT_ID="<your bot id>" ./start.sh`
+
+Then, it starts. And it would automatically resume after a reboot.
+To stop it. You can simply `./stop.sh`.

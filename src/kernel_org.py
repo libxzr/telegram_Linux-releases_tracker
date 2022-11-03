@@ -1,22 +1,18 @@
 #!/usr/bin/python3
 
 import time
-import logging
+import os
 
 import requests as req
 from bs4 import BeautifulSoup
 from bs4.element import Tag
 
-
-chat_id = "<your channel id>"
-bot_id = "<your bot id>"
-
-logging.basicConfig(
-    level=logging.INFO,
-    filename="<path to save logs>",
-    filemode="w",
-    format="%(asctime)s - %(pathname)s[line:%(lineno)d] - %(levelname)s: %(message)s"
-)
+try:
+    chat_id = os.environ["KTRACKER_CHAT_ID"]
+    bot_id = os.environ["KTRACKER_BOT_ID"]
+except:
+    print("You must provide both KTRACKER_CHAT_ID and KTRACKER_BOT_ID. Export them as environment variables.")
+    exit(1)
 
 def fetch_once():
     ret = set()
@@ -28,21 +24,22 @@ def fetch_once():
             if not isinstance(row, Tag):
                 continue
             ret.add(next(row.find_all("td")[1].strings))
-        logging.info(ret)
+        print(ret)
     except Exception as e:
-        logging.error(e)
+        print(e)
         return
     return ret
 
 def send(what):
     status = 0
     while status != 200:
-        logging.info("Try sending "+what)
+        print("Try sending " + what)
         status = req.post(
                 "https://api.telegram.org/bot%s/sendMessage" % bot_id,
                 {"parse_mode": "Markdown", "text": what, "chat_id": chat_id},
                 timeout=10).status_code
 
+print("Service started with chat_id = %s bot_id = %s" % (chat_id, bot_id))
 last_result = fetch_once()
 while True:
     time.sleep(300)
